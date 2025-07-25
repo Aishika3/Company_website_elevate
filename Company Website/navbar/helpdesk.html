@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Helpdesk | Elevate</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9fb;
+      color: #222;
+      padding: 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: #000;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo svg {
+      height: 32px;
+      width: 32px;
+      stroke: #000;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: #1a237e; /* Dark royal blue */
+    }
+
+    .helpdesk-card {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-left: 6px solid #1a237e;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .section {
+      margin-bottom: 1.5rem;
+    }
+
+    .section h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1a237e;
+      margin-bottom: 0.75rem;
+    }
+
+    .section p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #444;
+      margin: 0.25rem 0;
+    }
+
+    .icon {
+      font-size: 1.1rem;
+      margin-right: 0.4rem;
+      color: #1a237e;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .helpdesk-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <a href="#" class="logo" aria-label="Elevate Home">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 10l9-7 9 7v8a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2a2 2 0 00-2-2H5a2 2 0 00-2 2v2a2 2 0 01-2 2H3a2 2 0 01-2-2v-8z" />
+    </svg>
+    <span>Elevate</span>
+  </a>
+
+  <!-- Heading -->
+  <h1>🛠️ Need Help? Contact Our Helpdesk</h1>
+
+  <!-- Helpdesk Card -->
+  <div class="helpdesk-card">
+    <div class="section">
+      <p>Our support team is here for you 24/7! Reach out anytime for fast, friendly assistance.</p>
+    </div>
+
+    <div class="section">
+      <h2>📞 Contact Information:</h2>
+      <p><span class="icon">📧</span><strong>Email:</strong> support@elevatesoftware.com</p>
+      <p><span class="icon">📞</span><strong>Phone:</strong> +91 12345 67890</p>
+      <p><span class="icon">📍</span><strong>Address:</strong> 4th Floor, Elevate Tower, Sector 62, India</p>
+    </div>
+
+    <div class="section">
+      <h2>⏰ Support Hours:</h2>
+      <p><strong>Monday – Friday:</strong> 9:00 AM – 8:00 PM</p>
+      <p><strong>Saturday:</strong> 10:00 AM – 4:00 PM</p>
+      <p><strong>Sunday & Public Holidays:</strong> Closed</p>
+    </div>
+  </div>
+
+</body>
+</html>

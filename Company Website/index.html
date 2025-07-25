@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Office Website</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  /* Custom fonts and tweaks */
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #e6e9ed;
+  }
+  .nav-link {
+    @apply text-sm text-gray-300 hover:text-white transition-colors duration-300 ease-in-out;
+  }
+  .nav-link.active {
+    @apply bg-white bg-opacity-20 rounded-full px-4 py-2 text-white;
+  }
+  .btn-primary {
+    @apply bg-white text-gray-900 font-semibold py-2 px-6 rounded-full shadow hover:bg-gray-100 transition;
+  }
+  .btn-round {
+    @apply w-14 h-14 rounded-full flex items-center justify-center bg-blue-900 hover:bg-blue-800 transition cursor-pointer;
+  }
+  .overlay-glass {
+    background: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(12px);
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Custom focus ring for buttons */
+    button:focus-visible {
+      outline: 2px solid #2563eb; /* Tailwind blue-600 */
+      outline-offset: 2px;
+    }
+    
+    /* Custom scrollbar for positions list */
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background-color: #a78bfa;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      background-clip: content-box;
+    }
+
+    /* Transition for position cards icon */
+    .group:hover .icon-arrow {
+      transform: translateX(5px);
+    }
+    .content-wrapper {
+      max-width: 1200px;
+      margin: 3rem auto 6rem auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Contact info and map section */
+    .map-contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      background-color: #fff;
+      box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.1);
+      border-radius: 0.5rem;
+      padding: 2.5rem 2.25rem;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .map-contact-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .map-container {
+      border-radius: 0.375rem;
+      overflow: hidden;
+      box-shadow: 0 0 18px rgb(0 0 0 / 0.1);
+    }
+
+    .map-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .contact-info h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #111;
+    }
+
+    .contact-info p.lead {
+      font-weight: 400;
+      color: #666666;
+      margin-bottom: 1.5rem;
+      max-width: 375px;
+    }
+
+    .contact-info p.address {
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      color: #222222;
+    }
+
+    .contact-info .phone-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1.125rem;
+      margin-bottom: 0.1rem;
+      color: #a63f47;
+    }
+
+    .contact-info .phone-wrap svg {
+      width: 22px;
+      height: 22px;
+      stroke: #a63f47;
+      stroke-width: 1.5;
+    }
+
+    .contact-info .email {
+      color: #c63939;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .contact-info .email:hover {
+      color: #ff3b3b;
+      text-decoration: underline;
+    }
+   
+</style>
+</head>
+<body >
+<div class="flex flex-col min-h-screen">
+<header class="fixed top-0 z-50 w-full bg-gray-100">
+  <nav class="max-w-7xl mx-auto px-6 sm:px-12 py-5 flex items-center justify-between text-gray-300 select-none">
+    <!-- Left: Logo -->
+    <a href="#" class="flex items-center space-x-1 text-black font-semibold text-lg tracking-wide">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true" aria-label="Logo icon">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10l9-7 9 7v8a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2a2 2 0 00-2-2H5a2 2 0 00-2 2v2a2 2 0 01-2 2H3a2 2 0 01-2-2v-8z" />
+      </svg>
+      <span>Elevate</span>
+    </a>
+    <!-- Desktop nav links outside navbar: shown only md+ -->
+      <ul class="hidden md:flex space-x-6 items-center text-gray-700 font-semibold">
+        <li><a href="#" class="hover:text-gray-900">Home</a></li>
+        <li><a href="#aboutus" class="hover:text-gray-900">About Us</a></li>
+        <li><a href="#contactus" class="hover:text-gray-900">Contact Us</a></li>
+      </ul>
+    <!-- Hamburger menu always visible -->
+    <button id="mobile-menu-btn"
+      aria-label="Toggle menu"
+      class="text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-900 p-2 rounded transition"
+      aria-expanded="false">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+           class="w-7 h-7" viewBox="0 0 24 24">
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+  <!-- Hamburger menu dropdown - shown on all screens when toggled -->
+  <div id="mobile-menu" class="hidden fixed inset-0 bg-black bg-opacity-60 w-half top-half right-0 z-40 flex justify-end">
+    <div class="bg-white w-half drop-shadow-sm shadow-lg p-8 pt-16 relative animate__animated animate__fadeInRight">
+      <!-- Close button inside the menu -->
+      <button id="menu-close" class="absolute top-6 right-6 text-gray-700 hover:text-red-600 focus:outline-none" aria-label="Close menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+      <ul class="flex flex-col space-y-5 mt-8 text-lg font-semibold">
+        <li><a href="#" class="hover:text-indigo-600">Home</a></li>
+        <li><a href="#aboutus" class="hover:text-indigo-600">About Us</a></li>
+        <li><a href="#contactus" class="hover:text-indigo-600">Contact Us</a></li>
+        <li><button id="loginBtn">Login</button></li>
+        <li><a href="#economicsnews" class="hover:text-indigo-600">Economics and News</a></li>
+        <li class="auth-only hidden"><a href="#Dashboard" class="hover:text-indigo-600 scroll-mt-20">Dashboard</a></li>
+        <li class="auth-only hidden"><a href="#Forms" class="hover:text-indigo-600">Forms</a></li>
+        <li><a href="#Calendar and Events" class="hover:text-indigo-600">Calendar and Events</a></li>
+        <li><a href="#social" class="hover:text-indigo-600">Socials</a></li>
+        <li><a href="#datametrics" class="hover:text-indigo-600">Data Metrics</a></li>
+        <li><a href="#career" class="hover:text-indigo-600">Work with us</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+  <div class="pt-16">
+  <!-- Hero Section -->
+  <section class="relative w-full bg-gray-900 overflow-hidden">
+    <div class="absolute inset-0">
+      <img 
+        src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/15ad7c40-0a42-492a-8d3d-50c2136d229b.png" 
+        alt="Modern architectural building with glass walls at dusk in misty forest with warm lighting reflecting on water surface" 
+        class="w-full h-full object-cover object-center brightness-[0.5]" 
+        onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0de0f340-a00b-493e-b2a7-e38c2b2ae1fd.png'"/>
+      <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
+      <div class="absolute inset-0 border border-white border-opacity-20 pointer-events-none" style="box-shadow: inset 0 0 0 1px rgba(255 255 255 / 0.1)"></div>
+    </div>
+    <div class="relative max-w-7xl mx-auto px-6 sm:px-12 py-20 flex flex-col justify-between min-h-[600px]">
+      <nav aria-label="Stats" class="flex justify-between max-w-5xl mx-auto text-white text-xs uppercase select-none font-semibold tracking-widest mt-auto space-x-2">
+        <div class="text-center w-1/4">
+          <div class="font-bold text-xl">50+</div>
+          <div class="opacity-70">Projects Deployed</div>
+        </div>
+        <div class="text-center w-1/4">
+          <div class="font-bold text-xl">100+</div>
+          <div class="opacity-70">Expert Engineers</div>
+        </div>
+        <div class="text-center w-1/4">
+          <div class="font-bold text-xl">$3.5M</div>
+          <div class="opacity-70">Client Value Delivered</div>
+        </div>
+      </nav>
+
+      <div class="max-w-4xl mt-12 md:mt-0">
+        <div class="mb-2">
+          <span id="loggedUsername" class="block mt-3 text-xl uppercase font-semibold tracking-wide text-gray-300 hidden"></span>
+  <h1 class="text-white text-5xl sm:text-6xl font-extrabold leading-tight max-w-3xl drop-shadow-lg">
+    Let's Build software, people love
+  </h1>
+</div>
+        <p class="text-gray-300 max-w-xl mt-4 leading-relaxed text-lg drop-shadow-sm">
+          Bring your digital ideas to life with robust solutions that put innovation, performance, and user experience front and center. Simple, scalable, and built for creators like you.
+        </p>
+        <button id="get-started-btn" aria-label="Get started" class="mt-8 inline-flex items-center justify-center btn-primary gap-2 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/60 transition-transform">
+          Get started
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+
+      <button id="scroll-down-btn" aria-label="Scroll down" class="absolute left-1/2 -translate-x-1/2 bottom-8 bg-white bg-opacity-20 backdrop-blur-md border border-white border-opacity-30 py-2 px-6 rounded-full text-xs tracking-widest font-semibold text-gray-200 hover:bg-opacity-40 hover:text-white transition flex items-center gap-2">
+        Scroll down
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section id="aboutus" class="max-w-7xl mx-auto px-6 sm:px-12 py-20 bg-white scroll-mt-20">
+    <div class="max-w-4xl mx-auto text-center sm:text-left">
+      <p class="text-gray-400 text-xl font-light mb-2 select-none">Experience innovation</p>
+      <h2 class="text-4xl sm:text-5xl font-extrabold leading-tight max-w-xl mx-auto sm:mx-0">
+        software that transforms your <span class="text-gray-900">vision into reality.</span>
+      </h2>
+
+      <div class="flex items-center space-x-3 mt-8 mb-2 justify-center sm:justify-start">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/80311879-4c96-40da-a2d0-bad2699e5e75.png" alt="Avatar of team member 1 with friendly smiling face, short hair and casual outfit" class="w-12 h-12 rounded-full border-2 border-white shadow-lg" onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d477b5fa-5483-49d4-9797-9722775748ec.png'" />
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/10ceb972-0599-4ac7-b69b-2dbeeba33911.png" alt="Avatar of team member 2 with confident smile and professional look" class="w-12 h-12 rounded-full border-2 border-white shadow-lg -ml-4" onerror="this.src='https://placehold.co/48x48?text=NA&bg=ccc&fg=666'" />
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d654b4a4-cee5-4aef-9926-0baf2558ed83.png" alt="Avatar of team member 3 with cheerful expression wearing glasses" class="w-12 h-12 rounded-full border-2 border-white shadow-lg -ml-4" onerror="this.src='https://placehold.co/48x48?text=NA&bg=ccc&fg=666'" />
+      </div>
+      <p class="text-gray-500 max-w-lg mx-auto sm:mx-0 mb-12 select-none">We craft inspiring digital solutions that blend cutting-edge technology with seamless user experience, turning your ideas into impactful products.
+</p>
+
+      <div class="flex justify-center sm:justify-start space-x-6 text-gray-400 select-none" aria-label="Partner logos">
+        <!-- Logos simplistic placeholders -->
+        <div title="Logosipsum 1" class="opacity-60 hover:opacity-100 transition cursor-default">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" aria-label="Logo 1">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 12h8M12 8v8"/>
+          </svg>
+        </div>
+        <div title="Logosipsum 2" class="opacity-60 hover:opacity-100 transition cursor-default">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" aria-label="Logo 2">
+            <path d="M4 4h16v16H4z"/>
+            <circle cx="12" cy="12" r="6"/>
+          </svg>
+        </div>
+        <div title="Logosipsum 3" class="opacity-60 hover:opacity-100 transition cursor-default">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" aria-label="Logo 3">
+            <path d="M7 16l5-12 5 12H7z"/>
+          </svg>
+        </div>
+        <div title="Logosipsum 4" class="opacity-60 hover:opacity-100 transition cursor-default">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" aria-label="Logo 4">
+            <circle cx="12" cy="12" r="8"/>
+            <path d="M12 4v16M4 12h16"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="flex justify-center sm:justify-start mt-12">
+        <button id="scroll-down-btn" aria-label="Scroll down" class="bg-white bg-opacity-20 backdrop-blur-md border border-black bg-slate-800 py-2 px-6 rounded-full text-sm tracking-widest font-semibold text-gray-500 hover:bg-grey-200 hover:text-black transition flex items-center gap-2">
+         <a href="navbar/projects.html">Learn more</a>
+      </button>
+      </div>
+    </div>
+  </section>
+  </div>
+
+<div class="bg-white text-gray-900 font-sans mx-auto max-w-7xl p-6 sm:p-10 select-none">
+
+  
+  <!-- Top panel: Key Economic + News & Events -->
+  <section id="economicsnews" aria-label="Key Economic Indicators and News" class="flex flex-col lg:flex-row gap-6 mb-10 scroll-mt-20">
+    <article class="flex-1 bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between max-lg:order-2">
+      <h2 class="font-extrabold text-xl sm:text-2xl text-gray-900 mb-3">2023 Key Economic Indicators Forecast</h2>
+      <p class="text-gray-700 mb-6 leading-relaxed">
+        Last week The Federal Reserve increased its key rate by 0.25 percentage points, calling...
+      </p>
+     <button id="readMoreBtn" aria-label="Read more about 2023 Key Economic Indicators" class="bg-slate-800 text-white rounded-full px-5 py-2 w-max hover:bg-slate-900 transition focus-visible:ring-2 focus-visible:ring-slate-600">Read More</button>
+    </article>
+    <div id="readMoreModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg max-w-lg w-full p-8 shadow-lg">
+    <h2 class="font-extrabold text-xl sm:text-2xl text-gray-900 mb-3">2023 Key Economic Indicators Forecast</h2>
+    <p class="text-gray-700 mb-6 leading-relaxed">
+      <!-- Put your full news content here -->
+      Last week, The Federal Reserve increased its key rate by 0.25 percentage points, citing persistent inflation and signs of economic resilience. The move signals a continued focus on managing price stability while balancing concerns about growth. Economists are watching closely for impacts on lending, mortgage rates, and consumer spending as the market adjusts to this change.
+    </p>
+    <button id="closeReadMoreModal" class="bg-slate-800 text-white rounded-full px-5 py-2 w-max hover:bg-slate-900 transition">Close</button>
+  </div>
+</div>
+    <div class="relative flex-2 max-lg:order-1 max-lg:w-full">
+      <div class="rounded-lg overflow-hidden shadow-lg w-full max-w-2xl aspect-[16/9] mx-auto">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/15a5c8d5-b8f5-4365-aa1c-6bc76cb09822.png" alt="Stone exterior facade of a bank building with decorative columns and carved bank sign" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+      </div>
+      <div class="absolute bottom-2 right-6 flex space-x-2">
+        <button aria-label="Slide 1" class="w-3 h-3 rounded-full bg-white opacity-70"></button>
+        <button aria-label="Slide 2" class="w-3 h-3 rounded-full bg-white opacity-40"></button>
+        <button aria-label="Slide 3" class="w-3 h-3 rounded-full bg-white opacity-40"></button>
+      </div>
+    </div>
+
+    <aside class="w-80 bg-white rounded-lg shadow-lg p-4 max-lg:w-full max-lg:order-3" aria-label="News and Events">
+      <h3 class="font-extrabold text-lg mb-4 border-b border-gray-200 pb-2">News & Events</h3>
+      <ul class="space-y-4">
+        <li class="flex gap-3">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/07bc1282-660d-43a6-8855-0aacab0b943d.png" alt="A woman looking at a futuristic digital analytics dashboard" width="72" height="72" class="flex-shrink-0 rounded-md object-cover" onerror="this.style.display='none'"/>
+          <div>
+            <h4 class="font-semibold text-gray-900 text-sm">Beyond Dashboards: The Future Of Analytics And Business Intelligence</h4>
+            <p class="text-xs text-gray-600 break-words max-w-full">We have become accustomed to dashboards and scorecards in our analysis, data-driven business. However, the question is...</p>
+          </div>
+        </li>
+        <li class="flex gap-3">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0c6da39a-d0ac-4a77-acf3-42316336637d.png" alt="Clock tower with a large clock representing banking approach time" width="72" height="72" class="flex-shrink-0 rounded-md object-cover" onerror="this.style.display='none'"/>
+          <div>
+            <h4 class="font-semibold text-gray-900 text-sm">Industry players call for a 'non-stop' approach to banking digitization</h4>
+            <p class="text-xs text-gray-600 break-words max-w-full">If banks want to remain competitive in the face of new banks and fintechs startups, they'll have to abandon legacy tech systems...</p>
+          </div>
+        </li>
+        <li class="flex gap-3">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ff4c1f3e-31f4-46a7-b7f8-9530fd909a37.png" alt="Woman reading a document about credit risk assessments" width="72" height="72" class="flex-shrink-0 rounded-md object-cover" onerror="this.style.display='none'"/>
+          <div>
+            <h4 class="font-semibold text-gray-900 text-sm">New-to-Credit Prove to be Similar Risks Than Established Users</h4>
+            <p class="text-xs text-gray-600 break-words max-w-full">Consumers from all generations access loans each year for the first time and can prove to be good risks...</p>
+          </div>
+        </li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Navigation Buttons -->
+  <div id="Dashboard" aria-label="Core Navigation" class="auth-only hidden flex flex-wrap justify-center gap-6 mb-10 max-w-lg mx-auto scroll-mt-20">
+      <!-- Projects Button -->
+      <a href="navbar/projects.html">
+        <button id="projectsButton" class="flex flex-col items-center bg-slate-900 text-white rounded-lg px-7 py-5 aspect-square w-20 hover:bg-slate-700 transition focus-visible:ring-2 focus-visible:ring-slate-600" aria-label="Projects">
+          <svg fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8 mb-1" aria-hidden="true">
+            <path d="M3 4a1 1 0 0 1 1-1h16a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1zm0 5a1 1 0 0 1 1-1h7a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm0 5a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm0 5a1 1 0 0 1 1-1h16a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1z"/>
+          </svg>
+          <span class="text-sm font-semibold">Projects</span>
+        </button>
+      </a>
+  <a href="navbar/benefits.html">
+    <button class="flex flex-col items-center bg-slate-900 text-white rounded-lg px-7 py-5 aspect-square w-20 hover:bg-slate-700 transition focus-visible:ring-2 focus-visible:ring-slate-600" aria-label="Benefits">
+      <svg fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8 mb-1" aria-hidden="true"><path d="M18 7h-2V4H8v3H6a2 2 0 0 0-2 2v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-8a2 2 0 0 0-2-2zm-6 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+      <span class="text-sm font-semibold">Benefits</span>
+    </button>
+    </a>
+    <a href="navbar/helpdesk.html">
+    <button class="flex flex-col items-center bg-slate-900 text-white rounded-lg px-7 py-5 aspect-square w-20 hover:bg-slate-700 transition focus-visible:ring-2 focus-visible:ring-slate-600" aria-label="Helpdesk">
+      <svg fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8 mb-1" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a7.987 7.987 0 0 1-6.32-12.92l1.432 3.36a3 3 0 1 0 4.033 4.032l3.36 1.432A7.99 7.99 0 0 1 12 20zm-2-9a1 1 0 1 1 2 0v4a1 1 0 0 1-2 0z"/></svg>
+      <span class="text-sm font-semibold">Helpdesk</span>
+    </button>
+    </a>
+    <a href="navbar/reports.html">
+    <button class="flex flex-col items-center bg-slate-900 text-white rounded-lg px-7 py-5 aspect-square w-20 hover:bg-slate-700 transition focus-visible:ring-2 focus-visible:ring-slate-600" aria-label="Reports">
+      <svg fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8 mb-1" aria-hidden="true"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-3 14H8v-2h8v2zm0-4H8v-2h8v2zm0-4H8V7h8v2z"/></svg>
+      <span class="text-sm font-semibold">Reports</span>
+    </button>
+    </a>
+    <a href="navbar/directory.html">
+    <button class="flex flex-col items-center bg-slate-900 text-white rounded-lg px-7 py-5 aspect-square w-20 hover:bg-slate-700 transition focus-visible:ring-2 focus-visible:ring-slate-600" aria-label="Directory">
+      <svg fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8 mb-1" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-3.33 0-10 1.66-10 5v3h20v-3c0-3.34-6.67-5-10-5z"/></svg>
+      <span class="text-sm font-semibold">Directory</span>
+    </button>
+    </a>
+  </div>
+  
+  <!-- Forms & Templates + Calendar + Events -->
+  <section class="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-14">
+      <div id="Forms" class="auth-only hidden col-span-1 lg:col-span-2 scroll-mt-20">
+        <h3 class="font-extrabold text-xl mb-4">Forms & Templates</h3>
+    <input
+      type="search"
+      aria-label="Search Forms and Templates"
+      id="formSearch"
+      placeholder="Search Forms & Templates"
+      class="w-full mb-6 px-4 py-2 border-2 border-gray-300 rounded-full focus:border-slate-900 focus:outline-none text-gray-900"
+    />
+
+    <!-- Responsive button grid -->
+    <div
+      id="formsContainer"
+      class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+    >
+      <a href="navbar/onboarding.html">
+        <button class="btn-form bg-slate-700 text-white font-semibold px-5 py-3 rounded-md w-full">
+          Onboarding
+        </button>
+      </a>
+      <a href="navbar/payroll.html">
+        <button class="btn-form bg-green-400 text-white font-semibold px-5 py-3 rounded-md w-full">
+          Payroll
+        </button>
+      </a>
+      <a href="navbar/performance.html">
+        <button class="btn-form bg-slate-800 text-white px-5 py-3 rounded-md w-full">
+          Performance Review
+        </button>
+      </a>
+      <a href="navbar/privacy.html">
+        <button class="btn-form bg-gray-600 text-white font-semibold px-5 py-3 rounded-md w-full">
+          Privacy
+        </button>
+      </a>
+      <a href="navbar/safety.html">
+        <button class="btn-form bg-green-400 text-white font-semibold px-5 py-3 rounded-md w-full">
+          Safety
+        </button>
+      </a>
+      <a href="navbar/sop.html">
+        <button class="btn-form bg-slate-700 text-white font-semibold px-5 py-3 rounded-md w-full">
+          SOPs
+        </button>
+      </a>
+    </div>
+  </div>
+
+
+
+    <div id="Calendar and Events"  class="space-y-10 scroll-mt-20">
+      <!-- Calendar -->
+      <div  class="bg-white rounded-lg shadow-md p-6 w-full max-w-sm mx-auto " aria-label="Calendar July 2023">
+        <header class="flex items-center justify-between mb-4">
+          <button aria-label="Previous month" id="prevMonth" class="text-gray-500 hover:text-gray-900 focus:outline-none" >
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <span class="font-bold text-lg" id="monthYear">July 2023</span>
+          <button aria-label="Next month" id="nextMonth" class="text-gray-500 hover:text-gray-900 focus:outline-none" >
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </header>
+        <div class="grid grid-cols-7 text-center text-gray-600 font-semibold mb-2 select-none" aria-hidden="true">
+          <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-sm text-gray-700" id="calendarGrid" role="grid" aria-live="polite">
+          <!-- JavaScript will fill this -->
+        </div>
+      </div>
+
+      <!-- Events List -->
+      <section class="bg-white rounded-lg shadow-md p-4 w-full max-w-sm mx-auto" aria-label="Upcoming Events">
+        <ul class="space-y-4 text-sm text-gray-700">
+          <li class="flex justify-between items-center border-l-4 border-slate-900 pl-3" tabindex="0">
+            <time class="text-xs font-extrabold text-gray-900 w-12 flex flex-col leading-tight select-text">
+              <span>13</span><span class="uppercase">Apr</span>
+            </time>
+            <div class="flex-1 ml-2">
+              <p class="text-blue-700 font-semibold cursor-pointer hover:underline truncate" title="First Aid Training">First Aid Training</p>
+              <p class="text-xs text-gray-500 select-text">11:30 am - 12:30 pm</p>
+            </div>
+            <span class="bg-slate-900 text-white rounded-full px-3 py-1 uppercase text-xs font-bold tracking-wide select-none">Meeting</span>
+          </li>
+          <li class="flex justify-between items-center border-l-4 border-green-500 pl-3" tabindex="0">
+            <time class="text-xs font-extrabold text-gray-900 w-12 flex flex-col leading-tight select-text">
+              <span>16</span><span class="uppercase">Apr</span>
+            </time>
+            <div class="flex-1 ml-2">
+              <p class="text-green-600 font-semibold cursor-pointer hover:underline truncate" title="Easter Lunch">Easter Lunch</p>
+              <p class="text-xs text-gray-500 select-text">12:00 pm - 1:00 pm</p>
+            </div>
+            <span class="bg-green-400 text-green-900 rounded-full px-3 py-1 uppercase text-xs font-bold tracking-wide select-none">Get together</span>
+          </li>
+          <li class="flex justify-between items-center border-l-4 border-green-700 pl-3" tabindex="0">
+            <time class="text-xs font-extrabold text-gray-900 w-12 flex flex-col leading-tight select-text">
+              <span>29</span><span class="uppercase">May</span>
+            </time>
+            <div class="flex-1 ml-2">
+              <p class="text-gray-900 font-semibold cursor-pointer hover:underline truncate" title="Memorial Day">Memorial Day</p>
+              <p class="text-xs text-gray-500 select-text">12:00 pm - 1:00 pm</p>
+            </div>
+            <span class="bg-gray-300 text-gray-800 rounded-full px-3 py-1 uppercase text-xs font-bold tracking-wide select-none">Business</span>
+          </li>
+          <li class="flex justify-between items-center border-l-4 border-slate-900 pl-3" tabindex="0">
+            <time class="text-xs font-extrabold text-gray-900 w-12 flex flex-col leading-tight select-text">
+              <span>3</span><span class="uppercase">Jul</span>
+            </time>
+            <div class="flex-1 ml-2">
+              <p class="text-blue-700 font-semibold cursor-pointer hover:underline truncate" title="Independence Day">Independence Day</p>
+              <p class="text-xs text-gray-500 select-text">12:00 pm - 1:00 pm</p>
+            </div>
+            <span class="bg-slate-900 text-white rounded-full px-3 py-1 uppercase text-xs font-bold tracking-wide select-none">Meeting</span>
+          </li>
+        </ul>
+      </section>
+    </div>
+
+  </section>
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+
+  <!-- Social Corner -->
+  <section id="social" aria-label="Social corner posts" class="md:col-span-2 flex flex-col scroll-mt-20">
+  <h3 class="font-extrabold text-xl mb-4">Social Corner</h3>
+
+  <!-- Post input form -->
+  <form class="mb-6" onsubmit="handlePostSubmit(event)">
+    <input
+      type="text"
+      id="newPostInput"
+      placeholder="Write a post..."
+      maxlength="150"
+      aria-label="Write a post"
+      class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-900"
+    />
+  </form>
+
+  <!-- Posts Container - Responsive Grid -->
+  <div
+    id="postsContainer"
+    class="
+      grid grid-cols-1 
+      gap-4 
+      sm:grid-cols-2 
+      md:grid-cols-2 
+      md:gap-6
+      md:auto-rows-fr
+      px-0 py-0
+      w-full
+      justify-items-center 
+      "
+    style="scroll-behavior: smooth;"
+  >
+    <!-- JS appends posts here -->
+  </div>
+
+  <!-- Load More Button -->
+  <button
+    id="loadMoreBtn"
+    class="mt-4 bg-black text-white rounded-md px-6 py-2 w-max self-center hover:bg-gray-900 focus-visible:ring-2 focus-visible:ring-black"
+    aria-label="Load more social posts"
+  >
+    Load More
+  </button>
+</section>
+
+
+
+  <!-- Birthdays -->
+  <aside
+    aria-label="Birthdays this month"
+    class="bg-white rounded-lg shadow-lg p-6 max-w-full md:max-w-xs mx-auto md:mx-0"
+  >
+    <h3 class="font-extrabold text-xl mb-4">Birthdays</h3>
+    <ul class="divide-y divide-gray-200 text-gray-700">
+      <li class="flex items-center py-3 gap-4">
+        <img
+          src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f1f4c9cd-ab2e-4abf-8c4e-e78e48c80201.png"
+          alt="Profile photo of Anne Smith, Birthday today"
+          class="rounded-full flex-shrink-0 object-cover"
+          width="48"
+          height="48"
+          onerror="this.style.display='none'"
+        />
+        <div>
+          <p class="font-semibold text-gray-900">Anne Smith</p>
+          <p class="text-xs text-gray-500 italic">Birthday today</p>
+        </div>
+      </li>
+      <li class="flex items-center py-3 gap-4">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f3779e15-dc3b-4c7b-bb14-72ed24e7a2aa.png" alt="Profile photo of Beth Carlson, Birthday on March 1, 2023, woman with curly red hair and black top" class="rounded-full flex-shrink-0 object-cover" width="48" height="48" onerror="this.style.display='none'" />
+          <div>
+            <p class="font-semibold text-gray-900">Beth Carlson</p>
+            <p class="text-xs text-gray-500 italic">Birthday on March 1, 2023</p>
+          </div>
+        </li>
+        <li class="flex items-center py-3 gap-4">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e07ca2db-0803-4ad9-ad0e-ad0fc76bddd2.png" alt="Profile photo of Jason Salah, Birthday on April 19, 2023, man with short cropped hair and light beard wearing a collared shirt" class="rounded-full flex-shrink-0 object-cover" width="48" height="48" onerror="this.style.display='none'" />
+          <div>
+            <p class="font-semibold text-gray-900">Jason Salah</p>
+            <p class="text-xs text-gray-500 italic">Birthday on April 19, 2023</p>
+          </div>
+        </li>
+        <li class="flex items-center py-3 gap-4">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/84f49009-136e-498b-9683-3ec09f09046f.png" alt="Profile photo of Liza McDonald, Birthday on April 21, 2023, woman with medium dark hair and glasses, smiling" class="rounded-full flex-shrink-0 object-cover" width="48" height="48" onerror="this.style.display='none'" />
+          <div>
+            <p class="font-semibold text-gray-900">Liza McDonald</p>
+            <p class="text-xs text-gray-500 italic">Birthday on April 21, 2023</p>
+          </div>
+        </li>
+        <li class="flex items-center py-3 gap-4">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/642a6890-d85a-43e4-814b-14445df6a155.png" alt="Profile photo of Akash Patel, Birthday on May 1, 2023, man with short black hair and warm smile" class="rounded-full flex-shrink-0 object-cover" width="48" height="48" onerror="this.style.display='none'" />
+          <div>
+            <p class="font-semibold text-gray-900">Akash Patel</p>
+            <p class="text-xs text-gray-500 italic">Birthday on May 1, 2023</p>
+          </div>
+        </li>
+        <li class="flex items-center py-3 gap-4">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/97cbd86d-fc55-4da5-b742-ba456c860f1d.png" alt="Profile photo of Fernanda Gomez, Birthday on May 4, 2023, woman with long dark hair and bright smile" class="rounded-full flex-shrink-0 object-cover" width="48" height="48" onerror="this.style.display='none'" />
+          <div>
+            <p class="font-semibold text-gray-900">Fernanda Gomez</p>
+            <p class="text-xs text-gray-500 italic">Birthday on May 4, 2023</p>
+          </div>
+        </li>
+    </ul>
+  </aside>
+</section>
+
+  
+
+  <!-- Data Metrics -->
+  <section id="datametrics" class="grid grid-cols-1 sm:grid-cols-5 gap-4 max-w-7xl mx-auto text-white font-semibold text-center scroll-mt-20">
+    <div class="bg-slate-900 rounded-lg p-5">
+      <p class="text-3xl font-extrabold leading-none">23%<span class="inline-block align-top text-lg">↑</span></p>
+      <p class="text-sm mt-1">Loan Growth</p>
+      <p class="text-xs font-normal mt-1">this quarter</p>
+    </div>
+    <div class="bg-green-800 rounded-lg p-5">
+      <p class="text-3xl font-extrabold leading-none">5.2%<span class="inline-block align-top text-lg">↑</span></p>
+      <p class="text-sm mt-1">Investment Growth</p>
+      <p class="text-xs font-normal mt-1">this quarter</p>
+    </div>
+    <div class="bg-lime-500 rounded-lg p-5">
+      <p class="text-3xl font-extrabold leading-none">27.1K<span class="inline-block align-top text-lg">↑</span></p>
+      <p class="text-sm mt-1">New Accounts</p>
+      <p class="text-xs font-normal mt-1">this quarter</p>
+    </div>
+    <div class="bg-lime-400 rounded-lg p-5">
+      <p class="text-3xl font-extrabold leading-none">9.34K<span class="inline-block align-top text-lg">↑</span></p>
+      <p class="text-sm mt-1">Distance from Goal 1</p>
+      <p class="text-xs font-normal mt-1">this quarter</p>
+    </div>
+    <div class="bg-slate-700 rounded-lg p-5">
+      <p class="text-3xl font-extrabold leading-none">15.3K<span class="inline-block align-top text-lg">↑</span></p>
+      <p class="text-sm mt-1">Distance from Goal 2</p>
+      <p class="text-xs font-normal mt-1">this quarter</p>
+    </div>
+  </section>
+  </div>
+  <div class="bg-white text-gray-900 font-inter">
+  <section role="banner" aria-label="Page title Career" class="bg-black text-white text-center py-16 px-4">
+    <h1 class="text-4xl lg:text-5xl font-extrabold tracking-wide select-text">Career</h1>
+    <nav class="mt-4 text-gray-400 font-semibold text-sm select-none" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-2 justify-center">
+        <li><a href="#" class="hover:text-indigo-400 transition">Elevate</a></li>
+        <li aria-current="page" class="text-indigo-400 font-bold">Career</li>
+      </ol>
+    </nav>
+  </section>
+
+  <!-- Meet the team work section -->
+  <section id="career" class="max-w-7xl mx-auto px-6 lg:px-8 py-14 scroll-mt-20">
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <h2 class="text-3xl font-bold leading-tight tracking-wide mb-4 select-text">
+          Meet the team work <br class="hidden sm:block" /> behind our succeses
+        </h2>
+        <p class="text-gray-600 max-w-lg">
+          Our team consists of a group of talents. We solve customer problems with sincerity. All of our team
+          members are very intelligent and skilled.
+        </p>
+      </div>
+      <div aria-label="Team members working together at a table image" role="img" class="rounded-xl overflow-hidden shadow-lg">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6ab01a33-96cd-4311-ba02-5be5fb87008f.png"
+          alt="Four diverse team members collaborating on a project at a bright workspace, with laptops, notebooks, and coffee cups on the table, conveying teamwork and productivity" class="object-cover w-full h-full" onerror="this.style.display='none'" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Currently open positions section -->
+  <section class="max-w-7xl mx-auto px-6 lg:px-8 mb-20">
+    <h3 class="text-2xl font-bold text-center mb-10 select-text">Curently open positions</h3>
+    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      <!-- Single position card -->
+      <article tabindex="0" aria-label="UI/UX & Product Designer job position card" class="group border border-gray-200 rounded-xl p-6 hover:shadow-lg cursor-pointer focus:outline-indigo-400 focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 transition">
+        <h4 class="font-semibold text-lg mb-1">UI/UX & Product Designer</h4>
+        <p class="text-indigo-500 font-semibold mb-3">Full Time</p>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          Product design encompasses both UI/UX design but it also involves a broader understanding of the entire product.
+        </p>
+        <div class="flex items-center justify-between text-sm text-gray-500 font-medium">
+          <span>London, UK</span>
+          <span>$33k-$60k</span>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">Contact-<b>hr_hiring@elevate.com</b> </p>
+      </article>
+
+      <article tabindex="0" aria-label="Social Media Marketing job position card" class="group border border-gray-200 rounded-xl p-6 hover:shadow-lg cursor-pointer focus:outline-indigo-400 focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 transition">
+        <h4 class="font-semibold text-lg mb-1">Social Media Marketing</h4>
+        <p class="text-indigo-500 font-semibold mb-3">Remote</p>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          It involves creating and sharing content on social media networks to achieve marketing and branding goals.
+        </p>
+        <div class="flex items-center justify-between text-sm text-gray-500 font-medium">
+          <span>United State</span>
+          <span>$30k-40k</span>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">Contact-<b>hr_hiring@elevate.com</b> </p>
+      </article>
+
+      <article tabindex="0" aria-label="Web Developer job position card" class="group border border-gray-200 rounded-xl p-6 hover:shadow-lg cursor-pointer focus:outline-indigo-400 focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 transition">
+        <h4 class="font-semibold text-lg mb-1">Web Developer</h4>
+        <p class="text-indigo-500 font-semibold mb-3">Remote</p>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          Encompasses a range of task including web design front end development back end development & server management.
+        </p>
+        <div class="flex items-center justify-between text-sm text-gray-500 font-medium">
+          <span>New Work</span>
+          <span>$45k-$5k</span>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">Contact-<b>hr_hiring@elevate.com</b> </p>
+      </article>
+
+      <article tabindex="0" aria-label="Graphic Designer job position card" class="group border border-gray-200 rounded-xl p-6 hover:shadow-lg cursor-pointer focus:outline-indigo-400 focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 transition">
+        <h4 class="font-semibold text-lg mb-1">Graphic Designer</h4>
+        <p class="text-indigo-500 font-semibold mb-3">Full Time</p>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          Graphic designers combine art technology to the message through images & the layout of web screens & printed.
+        </p>
+        <div class="flex items-center justify-between text-sm text-gray-500 font-medium">
+          <span>New Work</span>
+          <span>$25k-$35k</span>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">Contact-<b>hr_hiring@elevate.com</b> </p>
+      </article>
+
+      <article tabindex="0" aria-label="VP of Growth Marketing job position card" class="group border border-gray-200 rounded-xl p-6 hover:shadow-lg cursor-pointer focus:outline-indigo-400 focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 transition">
+        <h4 class="font-semibold text-lg mb-1">VP of Growth Marketing</h4>
+        <p class="text-indigo-500 font-semibold mb-3">Full Time</p>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          Marketing often works closely with other departments such as product development sales & analytics implement.
+        </p>
+        <div class="flex items-center justify-between text-sm text-gray-500 font-medium">
+          <span>London, UK</span>
+          <span>$30k-40k</span>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">Contact-<b>hr_hiring@elevate.com</b> </p>
+      </article>
+
+      <article tabindex="0" aria-label="Lead of Product Design job position card" class="group border border-gray-200 rounded-xl p-6 hover:shadow-lg cursor-pointer focus:outline-indigo-400 focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 transition">
+        <h4 class="font-semibold text-lg mb-1">Lead of Product Design</h4>
+        <p class="text-indigo-500 font-semibold mb-3">Remote</p>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          Encompasses a range of task including web design front end development back end development & server management.
+        </p>
+        <div class="flex items-center justify-between text-sm text-gray-500 font-medium">
+          <span>United State</span>
+          <span>$25k-$35k</span>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">Contact-<b>hr_hiring@elevate.com</b> </p>
+      </article>
+    </div>
+  </section>
+  </div>
+  <div class="selection:bg-red-400 selection:text-white">
+  <main class="content-wrapper" role="main">
+
+     <section id="contactus" class="map-contact-wrapper scroll-mt-20" aria-labelledby="contact-heading">
+      <div class="contact-info">
+        <h2 id="contact-heading">Get in Touch</h2>
+        <p class="lead">
+We’d love to hear from you. Reach out to us for any questions, support, or feedback about our services.
+</p>
+        <p class="address">60 Road Broklyn Street of New York. USA</p>
+        <div class="phone-wrap" aria-label="Phone number">
+          +1- (234) 567 - 8009
+        </div>
+        <a href="mailto:needhelp@company.com" class="email">needhelp@company.com</a>
+      </div>
+    </section>
+  </main>
+</div>
+  <!-- Trusted company logos section -->
+  <section aria-label="Trusted by top companies" class="bg-gray-50 border-t border-gray-200 py-12">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <p class="text-center text-gray-600 text-sm font-semibold mb-6 select-none uppercase tracking-widest">
+        Trusted by 1600+ of the world's most popular companies
+      </p>
+      <div
+        class="flex flex-wrap justify-center items-center gap-12 max-w-5xl mx-auto filter grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-300 select-none"
+        aria-hidden="true">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c102ae88-80d1-478f-8f79-a540df1319b1.png" alt="Logo of a modern technology company in black and white style" class="h-10 object-contain" onerror="this.style.display='none'"/>
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f09ed0f2-fcc6-4d3a-9d6e-709fbafb7659.png" alt="Logo of a popular software company in gray scale" class="h-10 object-contain" onerror="this.style.display='none'"/>
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d03ce035-b789-4786-bc00-c6649d2701f9.png" alt="Logo of a leading startup company in black and white" class="h-10 object-contain" onerror="this.style.display='none'"/>
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/02d1f6c3-ddc6-40da-81e9-2a7a01ecfaad.png" alt="Minimalist grayscale logo of a global tech enterprise" class="h-10 object-contain" onerror="this.style.display='none'"/>
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c3353c93-074c-4b1f-b789-76ccbfae5a76.png" alt="Stylized monochrome logo for a software development company" class="h-10 object-contain" onerror="this.style.display='none'"/>
+      </div>
+    </div>
+  </section>
+  </div>
+  <!-- Login Modal -->
+<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-slate-100 rounded-lg max-w-xs w-full p-6 shadow-lg relative">
+    
+    <button id="closeLoginModal" class="absolute top-4 right-4 text-gray-600 hover:text-red-600 focus:outline-none">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+     <a href="#" class="flex items-center space-x-1 text-black font-semibold text-lg tracking-wide">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true" aria-label="Logo icon">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10l9-7 9 7v8a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2a2 2 0 00-2-2H5a2 2 0 00-2 2v2a2 2 0 01-2 2H3a2 2 0 01-2-2v-8z" />
+      </svg>
+      <span>Elevate</span>
+    </a>
+    <h3 class="font-bold text-lg mb-4 text-center">Login</h3>
+    <form id="loginForm" class="space-y-3">
+      <input type="text" id="loginUsername" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black" placeholder="Username">
+      <input type="email" id="loginEmail" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black" placeholder="Email">
+      <button type="submit" class="bg-black bg-opacity-20 backdrop-blur-md border border-white border-opacity-30 py-2 px-8 rounded-full text-sm tracking-widest font-semibold text-gray-800 hover:bg-opacity-40 hover:text-white transition-all mt-3 mx-auto block"
+  >Login</button>
+    </form>
+    <p id="loginError" class="text-red-600 text-sm mt-2 hidden">Invalid credentials. Try again.</p>
+  </div>
+</div>
+<script>
+  // --- Authentication / Auth‑only Sections Toggling ---
+  const loginBtn           = document.getElementById('loginBtn');
+  const loginModal         = document.getElementById('loginModal');
+  const closeLoginModal    = document.getElementById('closeLoginModal');
+  const loginForm          = document.getElementById('loginForm');
+  const loginError         = document.getElementById('loginError');
+  const loggedUsernameSpan = document.getElementById('loggedUsername');
+
+  let isLoggedIn       = false;
+  let loggedInUsername = '';
+
+  // Helper to show/hide all elements marked .auth-only
+  function toggleAuthElements() {
+    document.querySelectorAll('.auth-only')
+      .forEach(el => el.classList.toggle('hidden', !isLoggedIn));
+  }
+
+  // Update login/logout button text & styling, username display, and auth-only sections
+  function updateLoginButton() {
+    if (isLoggedIn) {
+      loginBtn.textContent = "Logout";
+      loginBtn.classList.add("text-red-500");
+      if (loggedUsernameSpan) {
+        loggedUsernameSpan.textContent = `Hi!! ${loggedInUsername}`;
+        loggedUsernameSpan.classList.remove('hidden');
+      }
+    } else {
+      loginBtn.textContent = "Login";
+      loginBtn.classList.remove("text-red-500");
+      if (loggedUsernameSpan) {
+        loggedUsernameSpan.textContent = "";
+        loggedUsernameSpan.classList.add('hidden');
+      }
+    }
+    toggleAuthElements();
+  }
+
+  // Click on loginBtn: open modal if logged out, or log out if logged in
+  loginBtn.addEventListener('click', function (e) {
+    if (isLoggedIn) {
+      // Log out
+      isLoggedIn = false;
+      loggedInUsername = '';
+      updateLoginButton();
+      return;
+    }
+    // Show login modal
+    loginModal.classList.remove('hidden');
+    loginError.classList.add('hidden');
+  });
+
+  // Close modal on "X" click
+  closeLoginModal.addEventListener('click', () => {
+    loginModal.classList.add('hidden');
+    loginError.classList.add('hidden');
+  });
+
+  // Close modal when clicking outside the content
+  loginModal.addEventListener('click', function (e) {
+    if (e.target === loginModal) {
+      loginModal.classList.add('hidden');
+      loginError.classList.add('hidden');
+    }
+  });
+
+  // Handle login form submission
+  loginForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const username = document.getElementById('loginUsername').value.trim();
+    const email    = document.getElementById('loginEmail').value.trim();
+
+    if (username && email) {
+      // Simulate successful login
+      isLoggedIn = true;
+      loggedInUsername = username;
+      updateLoginButton();
+      loginModal.classList.add('hidden');
+      loginForm.reset();
+    } else {
+      // Show error message
+      loginError.classList.remove('hidden');
+    }
+  });
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', updateLoginButton);
+</script>
+
+
+  <script>
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      if (mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.remove('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', "true");
+      } else {
+        mobileMenu.classList.add('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', "false");
+      }
+    });
+  </script>
+  
+  <script>
+  // Open modal for readMoreBtn
+  document.getElementById('readMoreBtn').onclick = function() {
+    document.getElementById('readMoreModal').classList.remove('hidden');
+  };
+  // Close modal
+  document.getElementById('closeReadMoreModal').onclick = function() {
+    document.getElementById('readMoreModal').classList.add('hidden');
+  };
+  // Optional: close modal when clicking outside the modal content
+  document.getElementById('readMoreModal').addEventListener('click', function(e) {
+    if(e.target === this) this.classList.add('hidden');
+  });
+</script>
+<script>
+  // Calendar JS
+
+  const calendarGrid = document.getElementById('calendarGrid');
+  const monthYearLabel = document.getElementById('monthYear');
+  const prevMonthBtn = document.getElementById('prevMonth');
+  const nextMonthBtn = document.getElementById('nextMonth');
+
+  let currentDate = new Date(2023, 6, 30); // July 2023 (month is 0-based)
+
+  // Highlights: July 1-30 except Sundays, Sundays are lighter
+  const highlightRange = { start: new Date(2023, 6, 1), end: new Date(2023, 6, 30) };
+
+  function isSameDate(d1, d2) {
+    return d1.getFullYear() === d2.getFullYear() &&
+           d1.getMonth() === d2.getMonth() &&
+           d1.getDate() === d2.getDate();
+  }
+
+  function renderCalendar(date) {
+    calendarGrid.innerHTML = '';
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    monthYearLabel.textContent = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+    // First day of month and last day of month
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    // Day of week first day (0 Sunday ... 6 Saturday)
+    const startDay = firstDay.getDay();
+
+    // Fill blank spaces for days before first day of month
+    for(let i=0; i < startDay; i++) {
+      const emptyCell = document.createElement('div');
+      calendarGrid.appendChild(emptyCell);
+    }
+
+    // Create each day
+    for(let d=1; d <= lastDay.getDate(); d++) {
+      const dayDate = new Date(year, month, d);
+      const dayCell = document.createElement('button');
+      dayCell.type = 'button';
+      dayCell.className = 'p-1 rounded-md focus:outline-slate-900 focus:ring-2 focus:ring-slate-900 focus:ring-offset-1';
+      dayCell.textContent = d;
+
+      // Sundays are lighter
+      if(dayDate.getDay() === 0) {
+        dayCell.classList.add('text-gray-300');
+      } else {
+        dayCell.classList.add('text-gray-700');
+      }
+      // Highlight range (1-30 July)
+      if(dayDate >= highlightRange.start && dayDate <= highlightRange.end && dayDate.getDay() !== 0) {
+        dayCell.classList.add('bg-slate-100');
+      }
+      // Selected day (30)
+      if(d === 30 && month === 6) {
+        dayCell.classList.add('bg-slate-900', 'text-white', 'font-semibold');
+      }
+      // Add aria-label with full date
+      dayCell.setAttribute('aria-label', dayDate.toDateString());
+
+      calendarGrid.appendChild(dayCell);
+    }
+  }
+
+  prevMonthBtn.addEventListener('click', () => {
+    currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() -1, 1);
+    renderCalendar(currentDate);
+  });
+  nextMonthBtn.addEventListener('click', () => {
+    currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() +1, 1);
+    renderCalendar(currentDate);
+  });
+
+  renderCalendar(currentDate);
+
+  // Social Corner Posts JS
+  const postsData = [
+    {
+      author: "Sabina Saetgareeva",
+      daysAgo: 34,
+      text: "Learn about our new product and watch our brand-new corporate video over delicious brunch from Medina cafe! Share your ideas for a product improvement and go-to-market strategy. See you at 10 am in conference room #12.",
+      image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0a18c901-dd86-4336-8baf-40517bc7e704.png",
+      comments: 3,
+      likes: 3,
+    },
+    {
+      author: "Sabina Saetgareeva",
+      daysAgo: 34,
+      text: "Wishing a very Happy Easter to my dear colleagues! May you enjoy this occasion with beautifully painted eggs and bunny chocolates. We will be closed Monday, April 10th for an Easter weekend. Our regular working hours will resume Tuesday, April 11st.",
+      image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6165be8a-583c-4892-bf19-6c8768efd619.png",
+      comments: 3,
+      likes: 2,
+    },
+    {
+      author: "Sabina Saetgareeva",
+      daysAgo: 34,
+      text: "Relax, recover, and feel refreshed with a yoga session on international yoga day. Whether you already have an established home practice or this is your first yoga experience, our instructors will guide you through a set of yoga poses designed to core...",
+      image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/771ad9b9-402c-4630-8113-e6256c42d08b.png",
+      comments: 1,
+      likes: 2,
+    }
+  ];
+
+  const postsContainer = document.getElementById('postsContainer');
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  const postsPerPage = 3;
+  let currentPage = 1;
+
+  function truncateText(text, maxLength) {
+    if(text.length <= maxLength) return text;
+    const truncated = text.substr(0, maxLength);
+    return truncated.substr(0, truncated.lastIndexOf(' ')) + '...';
+  }
+
+  function createPostCard(post) {
+    const card = document.createElement('article');
+    card.className = 'bg-white max-w-xs w-full rounded-md shadow flex flex-col overflow-hidden border border-gray-100';
+
+    card.innerHTML = `
+      <div class="p-4 flex flex-col flex-grow">
+        <div class="flex items-center gap-3 mb-3">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/231f00c7-7238-45ad-8ba6-506d47eedefe.png" alt="Profile avatar of ${post.author}" class="rounded-full object-cover w-10 h-10" />
+          <div>
+            <p class="font-semibold text-sm text-gray-900">${post.author}</p>
+            <p class="text-xs text-gray-500">${post.daysAgo} days ago</p>
+          </div>
+        </div>
+        <p class="text-xs text-gray-700 flex-grow mb-3" title="${post.text}">${truncateText(post.text, 120)}</p>
+      </div>
+      <div class="relative w-full h-40 overflow-hidden rounded-b-md">
+        <img src="${post.image}" alt="Social post banner image related to ${post.text.substring(0, 30)}" class="object-cover w-full h-full" onerror="this.style.display='none'" />
+      </div>
+      <footer class="flex justify-between items-center px-4 py-2 border-t border-gray-100 text-xs text-gray-600 select-none">
+        <span aria-label="Number of comments">${post.comments} Comment${post.comments !== 1 ? 's' : ''}</span>
+        <span aria-label="Number of likes">${post.likes} ♥</span>
+      </footer>
+    `;
+    return card;
+  }
+
+  function renderPosts(page) {
+    const start = (page - 1) * postsPerPage;
+    const end = start + postsPerPage;
+    const postsToRender = postsData.slice(start, end);
+    postsToRender.forEach(post => {
+      postsContainer.appendChild(createPostCard(post));
+    });
+  }
+
+  renderPosts(currentPage);
+
+  loadMoreBtn.addEventListener('click', () => {
+    currentPage++;
+    if((currentPage - 1) * postsPerPage >= postsData.length) {
+      loadMoreBtn.disabled = true;
+      loadMoreBtn.textContent = "No more posts";
+      return;
+    }
+    renderPosts(currentPage);
+  });
+
+  // Post submission (basic functionality)
+  function handlePostSubmit(event) {
+    event.preventDefault();
+    const input = document.getElementById('newPostInput');
+    const value = input.value.trim();
+    if(!value) return;
+    // Add new post on the left
+    const newPost = {
+      author: "You",
+      daysAgo: 0,
+      text: value,
+      image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/87f6dd2f-9f04-4072-a225-0a40658d5337.png",
+      comments: 0,
+      likes: 0,
+    };
+    postsData.unshift(newPost);
+    postsContainer.prepend(createPostCard(newPost));
+    input.value = '';
+  }
+
+  // Forms & Templates Search Filtering
+  const formSearchInput = document.getElementById('formSearch');
+  const formButtons = document.querySelectorAll('#formsContainer .btn-form');
+
+  formSearchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    formButtons.forEach(btn => {
+      const text = btn.textContent.toLowerCase();
+      if(text.includes(query)) {
+        btn.classList.remove('hidden');
+      } else {
+        btn.classList.add('hidden');
+      }
+    });
+  });
+
+</script>
+
+<script>
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const menuDrawer = document.getElementById('mobile-menu');
+  const closeBtn = document.getElementById('menu-close');
+  // Open menu
+  menuBtn.addEventListener('click', () => {
+    menuDrawer.classList.remove('hidden');
+    menuBtn.setAttribute('aria-expanded', "true");
+  });
+  // Close menu on close button click
+  closeBtn.addEventListener('click', () => {
+    menuDrawer.classList.add('hidden');
+    menuBtn.setAttribute('aria-expanded', "false");
+  });
+  // Also close menu when clicking outside drawer
+  menuDrawer.addEventListener('click', (e) => {
+    if (e.target === menuDrawer) {
+      menuDrawer.classList.add('hidden');
+      menuBtn.setAttribute('aria-expanded', "false");
+    }
+  });
+  
+  // Scroll down button functionality - smooth scroll to next section
+  const scrollDownBtn = document.getElementById('scroll-down-btn');
+  scrollDownBtn.addEventListener('click', () => {
+    const nextSection = document.querySelector('section:nth-of-type(2)');
+    if(nextSection) {
+      nextSection.scrollIntoView({behavior: 'smooth'});
+    }
+  });
+
+  // Get started button scrolls to projects section
+  const getStartedBtn = document.getElementById('get-started-btn');
+  getStartedBtn.addEventListener('click', () => {
+    const projectsSection = document.querySelector('section:nth-of-type(3)');
+    if(projectsSection) {
+      projectsSection.scrollIntoView({behavior: 'smooth'});
+    }
+  });
+</script>
+</body>
+</html>
+

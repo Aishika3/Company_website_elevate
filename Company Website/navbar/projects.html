@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elevate Projects</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9fb;
+      color: #222;
+      padding: 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: #000;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo svg {
+      height: 32px;
+      width: 32px;
+      stroke: #000;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: #2c3e50;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.07);
+      padding: 1.5rem;
+      transition: transform 0.2s ease-in-out;
+      border-left: 6px solid #0077ff;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .emoji {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #0077ff;
+    }
+
+    .desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #444;
+    }
+
+    .remove-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background-color: transparent;
+      border: none;
+      color: #e74c3c;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .add-btn {
+      display: block;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      background-color: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .add-btn:hover {
+      background-color: #005fcc;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <a href="#" class="logo" aria-label="Elevate Home">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 10l9-7 9 7v8a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2a2 2 0 00-2-2H5a2 2 0 00-2 2v2a2 2 0 01-2 2H3a2 2 0 01-2-2v-8z" />
+    </svg>
+    <span>Elevate</span>
+  </a>
+
+  <!-- Section Heading -->
+  <h1>🚧 Running Projects at Elevate</h1>
+
+  <!-- Project Cards Container -->
+  <div class="projects" id="projects-container"></div>
+
+  <!-- Add New Project Button -->
+  <button class="add-btn" onclick="addNewCard()">+ Add New Work</button>
+
+  <!-- JavaScript -->
+  <script>
+    const projects = [
+      {
+        emoji: "🤖",
+        title: "Elevate AI Insights",
+        description: "A cloud-native analytics suite turning disconnected enterprise data into real-time, predictive dashboards. No data-science degree required—just actionable intelligence."
+      },
+      {
+        emoji: "💸",
+        title: "FinPulse by Elevate",
+        description: "An API-first, bank-grade payments infrastructure for global wallets, instant payouts, and compliance automation. Go live in weeks, not months."
+      },
+      {
+        emoji: "🏥",
+        title: "Helix Health Platform",
+        description: "HIPAA-ready telehealth infrastructure with secure remote monitoring, automated triage, and AI-assisted diagnostics for smarter care globally."
+      },
+      {
+        emoji: "🌍",
+        title: "CarbonCraft IoT Network",
+        description: "Edge-deployed sensors + ML for smart factories to monitor and reduce carbon emissions by up to 38%. Sustainability meets automation."
+      },
+      {
+        emoji: "⚛️",
+        title: "QuantumLab R&D",
+        description: "Elevate’s internal incubator exploring quantum optimization and post-quantum encryption. Pioneering secure, high-performance computing."
+      },
+      {
+        emoji: "📚",
+        title: "Elevate LearnX",
+        description: "A micro-learning marketplace with adaptive courses co-created with industry experts. Fast, flexible upskilling for the future workforce."
+      }
+    ];
+
+    const container = document.getElementById('projects-container');
+
+    function createCard({ emoji, title, description }) {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      card.innerHTML = `
+        <button class="remove-btn" title="Remove Project">&times;</button>
+        <div class="emoji">${emoji}</div>
+        <div class="title">${title}</div>
+        <div class="desc">${description}</div>
+      `;
+
+      card.querySelector('.remove-btn').addEventListener('click', () => {
+        card.remove();
+      });
+
+      container.appendChild(card);
+    }
+
+    // Load initial cards
+    projects.forEach(createCard);
+
+    // Add new card
+    function addNewCard() {
+      const emoji = prompt("Enter emoji (e.g., 🚀):", "🚀");
+      const title = prompt("Enter project title:", "New Innovation");
+      const description = prompt("Enter project description:", "Describe your new work here...");
+
+      if (emoji && title && description) {
+        createCard({ emoji, title, description });
+      } else {
+        alert("All fields are required.");
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -865,7 +865,14 @@ We’d love to hear from you. Reach out to us for any questions, support, or fee
 
   let isLoggedIn       = false;
   let loggedInUsername = '';
-
+//local storage
+document.addEventListener('DOMContentLoaded', () => {
+   if (localStorage.getItem('isLoggedIn') === 'true') {
+     isLoggedIn = true;
+    loggedInUsername = localStorage.getItem('username') || '';
+  }
+    updateLoginUI();
+  });
   // Helper to show/hide all elements marked .auth-only
   function toggleAuthElements() {
     document.querySelectorAll('.auth-only')
@@ -881,6 +888,9 @@ We’d love to hear from you. Reach out to us for any questions, support, or fee
         loggedUsernameSpan.textContent = `Hi!! ${loggedInUsername}`;
         loggedUsernameSpan.classList.remove('hidden');
       }
+      if (messageButton) {
+       messageButton.classList.remove('hidden');
+    }
     } else {
       loginBtn.textContent = "Login";
       loginBtn.classList.remove("text-red-500");
@@ -888,6 +898,9 @@ We’d love to hear from you. Reach out to us for any questions, support, or fee
         loggedUsernameSpan.textContent = "";
         loggedUsernameSpan.classList.add('hidden');
       }
+      if (messageButton) {
+       messageButton.classList.add('hidden');
+     }
     }
     toggleAuthElements();
   }
@@ -898,7 +911,10 @@ We’d love to hear from you. Reach out to us for any questions, support, or fee
       // Log out
       isLoggedIn = false;
       loggedInUsername = '';
-      updateLoginButton();
+      
+      localStorage.removeItem('isLoggedIn');
+     localStorage.removeItem('username');
+     updateLoginButton();
       return;
     }
     // Show login modal
@@ -930,6 +946,9 @@ We’d love to hear from you. Reach out to us for any questions, support, or fee
       // Simulate successful login
       isLoggedIn = true;
       loggedInUsername = username;
+      // ✅ Save login state to localStorage
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('username', username);
       updateLoginButton();
       loginModal.classList.add('hidden');
       loginForm.reset();
@@ -974,9 +993,7 @@ function updateLoginButton() {
   toggleAuthElements();
 }
 
-  
 </script>
-
 
   <script>
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');

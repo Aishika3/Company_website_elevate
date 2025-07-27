@@ -2,7 +2,7 @@
 
 # TechElevate Office – A Modern Intranet Dashboard
 
-🌐 **Live Demo**: [Click here](https://techelevatesoftwarecompany.netlify.app/)  
+🌐 **Live Demo**: [Click here](https://company-website-elevate.vercel.app/)  
 🎯 **Challenge**: Submission for [Frontend Challenge: Office Edition by Axero on DEV](https://dev.to/challenges/frontend/axero)
 
 ---
